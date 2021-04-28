@@ -1,0 +1,75 @@
+apt-get update
+apt-get upgrade
+apt-get install lamp-server^
+apt-get install phpmyadmin -y
+sudo apt install php7.4-bcmath
+sudo apt install php7.4-intl
+apt install php7.4-soap
+service apache2 restart
+-------------------------------------------------------------
+nano /etc/php/7.4/apache2/php.ini
+memory_limit=2G
+realpath_cache_size = 10M
+realpath_cache_ttl = 7200
+===============================================================
+MySQL
+username: root
+Password: qk506Dg8L2OnPV6E
+----------------------------------------------
+Login to MySQL 
+sudo mysql -p -u root
+
+CREATE USER 
+CREATE USER 'admin'@'%' IDENTIFIED BY 'JjZBIvaiMi0'; 
+
+GRANT ALL PRIVILEGES 
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+=================================================================
+Phpmyadmin
+http://54.255.184.140/phpmyadmin/
+Username: admin
+Password: JjZBIvaiMi0
+=============================================================
+sudo a2enmod rewrite
+systemctl restart apache2
+nano /etc/apache2/sites-available/000-default.conf
+    <Directory /var/www/html>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Require all granted
+    </Directory>
+systemctl restart apache2
+=============================================================
+For Postfix
+sudo DEBIAN_PRIORITY=low apt install postfix
+
+===============================================================
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+sudo apt update
+sudo apt install elasticsearch
+sudo systemctl start elasticsearch
+sudo systemctl enable elasticsearch
+===================================================================
+apt install composer
+-------------------------------------------------------------------
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition .
+sudo find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
+sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+sudo chown -R ubuntu:www-data . # Ubuntu
+sudo chmod u+x bin/magento
+----------------------------------------------------------------------------------------
+Public Key: e7f4b59c580bf339d5370de19d71b8fc Copy
+Private Key: 76d26e2d03f4d72e29f067de33fa6bdc Copy
+======================================================================================
+php bin/magento setup:install --base-url="http://13.232.78.163/"  --db-host="localhost" --db-name="magentodb" --db-user="admin" --db-password="JjZBIvaiMi0" --admin-firstname="Magento" --admin-lastname="User" --admin-email="test@gmail.com" --admin-user="MagentoAdmin" --admin-password="Magento@#123W" --language="en_US" --currency="USD" --timezone="America/Chicago" --use-rewrites="1"
+
+=================================================================================
+bin/magento config:set twofactorauth/general/enable 0
+bin/magento module:disable Magento_TwoFactorAuth
+===============================================================================================
+https://devdocs.magento.com/guides/v2.4/install-gde/prereq/php-settings.html
+https://devdocs.magento.com/guides/v2.4/install-gde/prereq/connect-auth.html
+
+
+
